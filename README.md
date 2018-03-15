@@ -17,12 +17,14 @@ Follow the instructions at [An ASP.NET Core 2.0 web API with Azure AD B2C](https
 $ git clone https://github.com/ParamountVentures/azure-ad-b2c-claims-erlang
 ```
 
-Edit the src/azure_ad_b2c_claims_app.erl and set the following constants from your B2C instance:
+Edit the src/azure_ad_b2c_claims.app.src and change the following constants from your B2C instance:
 
 ```erlang
--define(ENDPOINT, <<"https://login.microsoftonline.com/fabrikamb2c.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_sign_in">>).
--define(KID, "X5eXk4xyojNFum1kl2Ytv8dlNP4-c57dO6QGTVBwaNk").
--define(TOKEN, <<"?????????????">>
+    {tenant, "fabrikamb2c"},
+    {policy, "B2C_1_sign_in"},
+    {kid, "X5eXk4xyojNFum1kl2Ytv8dlNP4-c57dO6QGTVBwaNk"},
+    {folder, "./src/"},
+    {testtoken, <<"123.456.789">>}
 ```
 
 Now run the application:
