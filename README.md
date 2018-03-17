@@ -22,7 +22,6 @@ Edit the src/azure_ad_b2c_claims.app.src and change the following constants from
 ```erlang
     {tenant, "fabrikamb2c"},
     {policy, "B2C_1_sign_in"},
-    {kid, "X5eXk4xyojNFum1kl2Ytv8dlNP4-c57dO6QGTVBwaNk"},
     {folder, "./src/"},
     {testtoken, <<"123.456.789">>}
 ```

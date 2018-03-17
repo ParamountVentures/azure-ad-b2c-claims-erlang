@@ -91,16 +91,25 @@ start(_StartType, _StartArgs) ->
    ),
 
 
+    % get the token details from the token that has been sent  application:start(azure_ad_b2c_claims).
+    {_, Token} = application:get_env(azure_ad_b2c_claims, testtoken),
+    [Header, _, _] = string:split(Token, ".", all),
+
+    % now get the header part of the token
+    DecodedToken = base64url:decode(Header),
+    TJsonParsed = jsx:decode(DecodedToken, [return_maps]),
+
+    % get the kid for the key
+    TestName = binary_to_list(maps:get(<<"kid">>, TJsonParsed)),
+
     % at this point we validate the token you obtained from the web api sample
-    {_, TestName} = application:get_env(azure_ad_b2c_claims, kid),
     TestFile = string:concat(Folder, TestName),
-%    TestFile = string:concat("./src/", TestName),
     TestFile1 = string:concat(TestFile, ".pem"),
     {ok, TestKey} = file:read_file(TestFile1),
     [ RSAEntry ] = public_key:pem_decode(TestKey),
     KeyDecoded = public_key:pem_entry_decode(RSAEntry),
 
-    {_, Token} = application:get_env(azure_ad_b2c_claims, testtoken),
+    % now decode and check the claims
     case jwt:decode(Token, KeyDecoded) of
 	{error,invalid_token} ->
 	    {error,invalid_token};
